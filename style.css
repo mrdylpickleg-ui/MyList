@@ -1,0 +1,61 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 40px 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#joinButton {
+    background: #5865f2;
+    color: white;
+}
+
+#nameBox {
+    margin: 20px 0;
+}
+
+input {
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.entry {
+    background: #222;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.number {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.name {
+    font-size: 18px;
+}
