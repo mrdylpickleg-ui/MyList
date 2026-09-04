@@ -1,61 +1,197 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    margin: 0;
     background: #111;
     color: white;
-    text-align: center;
-    margin: 0;
-    padding: 40px 20px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .container {
-    max-width: 600px;
+    width: 90%;
+    max-width: 700px;
     margin: auto;
+    padding: 50px 0;
+    text-align: center;
 }
 
 h1 {
-    font-size: 40px;
+    font-size: 60px;
+    letter-spacing: 5px;
+    margin: 0 0 20px;
 }
 
-button {
-    padding: 12px 20px;
-    font-size: 16px;
+.counter {
+    margin-bottom: 35px;
+}
+
+#memberCount {
+    font-size: 70px;
+    font-weight: bold;
+}
+
+.counter span {
+    font-size: 14px;
+    letter-spacing: 3px;
+    opacity: 0.7;
+}
+
+#joinButton,
+#submitButton {
+    background: white;
+    color: black;
     border: none;
     border-radius: 8px;
+    padding: 15px 25px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
 }
 
-#joinButton {
-    background: #5865f2;
-    color: white;
+#submitButton {
+    margin-top: 12px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #nameBox {
-    margin: 20px 0;
-}
-
-input {
-    padding: 12px;
-    font-size: 16px;
-    border-radius: 8px;
-    border: none;
-}
-
-.hidden {
     display: none;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#nameInput {
+    width: 400px;
+    max-width: 80%;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    display: block;
+    margin: 0 auto;
+}
+
+#message {
+    min-height: 25px;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.members {
+    margin-top: 45px;
+    text-align: left;
+}
+
+.members h2 {
+    text-align: center;
 }
 
 .entry {
-    background: #222;
-    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
     padding: 15px;
+    margin: 8px 0;
+    background: #1d1d1d;
     border-radius: 10px;
 }
 
 .number {
-    font-size: 22px;
+    min-width: 60px;
     font-weight: bold;
 }
 
 .name {
     font-size: 18px;
+    word-break: break-word;
+}
+
+.entry:nth-child(1) {
+    background: #3a3215;
+}
+
+.entry:nth-child(1) .number::before {
+    content: "🥇 ";
+}
+
+.entry:nth-child(2) {
+    background: #292929;
+}
+
+.entry:nth-child(2) .number::before {
+    content: "🥈 ";
+}
+
+.entry:nth-child(3) {
+    background: #302018;
+}
+
+.entry:nth-child(3) .number::before {
+    content: "🥉 ";
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 42px;
+    }
+
+    #memberCount {
+        font-size: 55px;
+    }
+
+    #nameInput {
+        width: 100%;
+    }
+}
+
+/* ACCOUNT */
+
+.account-box {
+    margin-bottom: 30px;
+}
+
+.account-box button {
+    background: white;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    margin: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.account-box input {
+    display: block;
+    width: 300px;
+    max-width: 90%;
+    padding: 12px;
+    margin: 8px auto;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+}
+
+#signupBox,
+#loginBox {
+    margin-top: 15px;
+}
+
+#accountMessage {
+    min-height: 25px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+#welcomeMessage {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
 }

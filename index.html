@@ -3,27 +3,1003 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The List</title>
-    <link rel="stylesheet" href="style.css">
+
+    <title>THE GANG</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 30px 15px;
+            background: #111;
+            color: white;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 42px;
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            margin-top: 30px;
+        }
+
+        /* ACCOUNT */
+
+        #accountSection {
+            background: #1b1b1b;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+
+        #accountBox {
+            margin-top: 5px;
+        }
+
+        #loginBox,
+        #signupBox {
+            margin-top: 12px;
+        }
+
+        #accountName {
+            font-weight: bold;
+        }
+
+        /* INPUTS */
+
+        input,
+        textarea {
+            background: #222;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 7px;
+            padding: 9px;
+            font-family: Arial, sans-serif;
+        }
+
+        input {
+            margin: 3px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #999;
+        }
+
+        /* BUTTONS */
+
+        button {
+            cursor: pointer;
+            padding: 8px 14px;
+            margin: 3px;
+            border: 1px solid #444;
+            border-radius: 7px;
+            background: #292929;
+            color: white;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #383838;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* GANG */
+
+        #list {
+            margin-top: 15px;
+        }
+
+        .entry {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #1b1b1b;
+            border: 1px solid #333;
+            border-radius: 9px;
+            padding: 12px;
+            margin: 7px 0;
+        }
+
+        .number {
+            color: #888;
+            min-width: 45px;
+        }
+
+        .name {
+            font-weight: bold;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            min-width: 10px;
+            border-radius: 50%;
+            background: #555;
+        }
+
+        .status-dot.online {
+            background: #4ade80;
+            box-shadow: 0 0 6px #4ade80;
+        }
+
+        /* NOTIFICATIONS */
+
+        #notifBellButton {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 100;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+        }
+
+        .notif-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #ff4d4d;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            min-width: 17px;
+            height: 17px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+        }
+
+        #notifPanel {
+            position: fixed;
+            top: 68px;
+            right: 15px;
+            width: 340px;
+            max-width: 90vw;
+            max-height: 420px;
+            overflow-y: auto;
+            background: #1b1b1b;
+            border: 1px solid #444;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            text-align: left;
+        }
+
+        #notifPanelHeader {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        #notifPanelHeader button {
+            font-size: 12px;
+            padding: 5px 8px;
+        }
+
+        .notif-item {
+            background: #222;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 6px 0;
+            cursor: pointer;
+        }
+
+        .notif-item:hover {
+            background: #2a2a2a;
+        }
+
+        .notif-item.unread {
+            border-color: #666;
+            background: #262626;
+        }
+
+        .notif-item.unread .notif-item-text::before {
+            content: "● ";
+            color: #4ade80;
+        }
+
+        .notif-item-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .notif-item-close {
+            flex-shrink: 0;
+            padding: 2px 7px;
+            font-size: 12px;
+            line-height: 1;
+        }
+
+        .notif-item-text {
+            overflow-wrap: anywhere;
+        }
+
+        .notif-item-time {
+            color: #888;
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        .highlight-flash {
+            animation: highlightFlash 2s ease;
+        }
+
+        @keyframes highlightFlash {
+            0% { background: #3a3215; }
+            100% { background: transparent; }
+        }
+
+        #message,
+        #loginMessage,
+        #signupMessage,
+        #postMessage,
+        #requestMessage {
+            margin-top: 8px;
+            color: #ccc;
+        }
+
+        /* POSTS */
+
+        #postBox {
+            background: #1b1b1b;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        .post {
+            background: #1b1b1b;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 12px 0;
+        }
+
+        .post-username {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .post-content {
+            margin: 10px 0;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .post-image {
+            display: block;
+            width: 100%;
+            max-height: 600px;
+            object-fit: contain;
+            margin: 12px 0;
+            border-radius: 10px;
+            border: 1px solid #333;
+            background: #0d0d0d;
+        }
+
+        .image-preview {
+            display: none;
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 10px;
+            border-radius: 10px;
+            border: 1px solid #444;
+        }
+
+        .image-picker-row {
+            margin-top: 10px;
+        }
+
+        .selected-image-name {
+            color: #999;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .like-button {
+            margin-left: 0;
+        }
+
+        .reply-button {
+            margin-left: 3px;
+        }
+
+        .reply-count {
+            color: #aaa;
+            margin-top: 8px;
+        }
+
+        .reply-box {
+            margin-top: 10px;
+        }
+
+        .reply-input {
+            width: calc(100% - 100px);
+            max-width: 600px;
+        }
+
+        .reply {
+            margin-top: 8px;
+            margin-left: 20px;
+            padding: 10px;
+            border-left: 3px solid #444;
+            background: #151515;
+            border-radius: 5px;
+        }
+
+        .reply-username {
+            font-weight: bold;
+        }
+
+        .reply-content {
+            margin-top: 4px;
+            overflow-wrap: anywhere;
+        }
+
+
+        /* DIRECT MESSAGES */
+
+        #dmPanel {
+            background: #1b1b1b;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 30px;
+        }
+
+        #dmTarget {
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        #groupNameInput,
+        #groupMemberUsernameInput {
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        #groupMembersChips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 8px 0;
+        }
+
+        .group-chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #292929;
+            border: 1px solid #444;
+            border-radius: 20px;
+            padding: 5px 8px 5px 12px;
+            font-size: 13px;
+        }
+
+        .group-chip-remove {
+            cursor: pointer;
+            background: #3a3a3a;
+            border: none;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            color: white;
+            font-size: 11px;
+            line-height: 1;
+            padding: 0;
+            margin: 0;
+        }
+
+        .group-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            background: #1f1f1f;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 9px 11px;
+            margin: 6px 0;
+        }
+
+        .group-item-name {
+            font-weight: bold;
+        }
+
+        .group-item-members {
+            color: #999;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        #dmMessageInput {
+            width: 100%;
+            min-height: 80px;
+            margin-top: 5px;
+        }
+
+        #dmMessages {
+            max-height: 450px;
+            overflow-y: auto;
+            margin-top: 15px;
+            padding: 10px;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 10px;
+        }
+
+        .dm-message {
+            padding: 9px 11px;
+            margin: 7px 0;
+            border-radius: 9px;
+            background: #222;
+        }
+
+        .dm-message.mine {
+            background: #292929;
+            border: 1px solid #444;
+        }
+
+        .dm-message-user {
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .dm-message-content {
+            margin-top: 4px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .dm-message-time {
+            color: #777;
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        /* REQUESTS */
+
+        #requestPanel {
+            width: 100%;
+            background: #1b1b1b;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 30px;
+        }
+
+        #requestPanel input,
+        #requestPanel textarea {
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        #requestPanel textarea {
+            height: 100px;
+        }
+
+        /* ADMIN */
+
+        #adminPanel {
+            max-width: 850px;
+            margin: 40px auto;
+        }
+
+        #adminPanelInner {
+            background: #151515;
+            border: 1px solid #444;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .admin-title {
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .admin-subtitle {
+            text-align: center;
+            color: #999;
+            margin-top: 4px;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .admin-stat {
+            background: #1f1f1f;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .admin-stat-number {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .admin-stat-label {
+            color: #aaa;
+            margin-top: 5px;
+        }
+
+        .admin-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+
+        .admin-buttons button {
+            flex: 1;
+            min-width: 170px;
+        }
+
+        .admin-item {
+            background: #1b1b1b;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 12px;
+            margin: 10px 0;
+        }
+
+        .admin-item-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .admin-item-content {
+            margin-top: 10px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .admin-item-info {
+            margin-top: 8px;
+            color: #888;
+            font-size: 13px;
+        }
+
+        .admin-delete {
+            background: #321919;
+            border-color: #663333;
+        }
+
+        .admin-delete:hover {
+            background: #542020;
+        }
+
+        .admin-ban {
+            background: #3a2412;
+            border-color: #76502b;
+        }
+
+        .admin-ban:hover {
+            background: #583718;
+        }
+
+        .admin-unban {
+            background: #18351f;
+            border-color: #315e3b;
+        }
+
+        .admin-account-status {
+            font-weight: bold;
+        }
+
+        .admin-active {
+            color: #76d68a;
+        }
+
+        .admin-banned {
+            color: #ff7070;
+        }
+
+        .admin-admin {
+            color: #d7a6ff;
+        }
+
+        .admin-image {
+            display: block;
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px 10px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .reply-input {
+                width: 100%;
+            }
+
+            .reply {
+                margin-left: 8px;
+            }
+
+            .admin-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-item-top {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-    <div class="container">
-        <h1>THE GANG</h1>
+<div class="container">
 
-        <button id="joinButton">JOIN THE GANG</button>
+    <h1>THE GANG</h1>
 
-        <div id="nameBox" class="hidden">
-            <input id="nameInput" type="text" maxlength="30" placeholder="Enter your name">
-            <button id="submitButton">Join</button>
-        </div>
-
-        <p id="message"></p>
-
-        <div id="list"></div>
+    <div style="text-align:center;margin-bottom:15px;">
+        <a href="game.html" style="display:inline-block;background:#292929;border:1px solid #444;border-radius:7px;padding:8px 14px;color:white;text-decoration:none;font-weight:bold;">
+            🎮 PLAY THE ARCADE
+        </a>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="script.js"></script>
+    <!-- ACCOUNT -->
+
+    <div id="accountSection">
+
+        <div id="loggedOut">
+
+            <button id="loginButton">
+                LOG IN
+            </button>
+
+            <button id="signupButton">
+                SIGN UP
+            </button>
+
+        </div>
+
+        <div id="accountBox" style="display:none;">
+
+            <span id="accountName"></span>
+
+            <button id="notifBellButton">
+                🔔
+                <span id="notifBadge" class="notif-badge" style="display:none;"></span>
+            </button>
+
+            <button id="logoutButton">
+                LOG OUT
+            </button>
+
+            <div id="notifPanel" style="display:none;">
+
+                <div id="notifPanelHeader">
+                    <strong>NOTIFICATIONS</strong>
+                    <div>
+                        <button id="notifPermissionButton" style="display:none;">🔔 ENABLE ALERTS</button>
+                        <button id="notifMarkReadButton">MARK ALL READ</button>
+                        <button id="notifClearAllButton">CLEAR ALL</button>
+                    </div>
+                </div>
+
+                <div id="notifList">
+                    <div style="color:#777;">No notifications yet.</div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div id="loginBox" style="display:none;">
+
+            <input
+                id="loginEmail"
+                type="email"
+                placeholder="Email"
+            >
+
+            <input
+                id="loginPassword"
+                type="password"
+                placeholder="Password"
+            >
+
+            <button id="submitLogin">
+                LOG IN
+            </button>
+
+            <div id="loginMessage"></div>
+
+        </div>
+
+    </div>
+
+    <!-- GANG -->
+
+    <h2>
+        <span id="memberCount">0</span>
+        PEOPLE IN THE GANG
+    </h2>
+
+    <button id="joinButton">
+        JOIN THE GANG
+    </button>
+
+    <div id="nameBox" style="display:none;">
+
+        <input
+            id="nameInput"
+            type="text"
+            maxlength="30"
+            placeholder="Your name"
+        >
+
+        <button id="submitButton">
+            SUBMIT
+        </button>
+
+    </div>
+
+    <div id="message"></div>
+
+    <div id="list"></div>
+
+    <!-- POSTS -->
+
+    <h2>📝 POSTS</h2>
+
+    <div id="loginToPost" style="display:none;">
+        Log in to make a post.
+    </div>
+
+    <div id="postBox">
+
+        <textarea
+            id="postContent"
+            maxlength="1000"
+            placeholder="What's happening?"
+        ></textarea>
+
+        <div class="image-picker-row">
+
+            <input
+                id="postImage"
+                type="file"
+                accept="image/jpeg,image/png,image/gif,image/webp"
+				disabled
+            >
+
+            <div
+                id="selectedImageName"
+                class="selected-image-name"
+            ></div>
+
+            <img
+                id="imagePreview"
+                class="image-preview"
+                alt="Selected image preview"
+            >
+
+        </div>
+
+        <br>
+
+        <button id="removeImageButton" style="display:none;">
+            REMOVE IMAGE
+        </button>
+
+        <button id="postButton">
+            POST
+        </button>
+
+        <div id="postMessage"></div>
+
+    </div>
+
+    <div id="posts"></div>
+
+
+    <!-- DIRECT MESSAGES -->
+
+    <div id="dmPanel">
+
+        <h2>💬 DIRECT MESSAGES</h2>
+
+        <div id="dmLoginMessage">Log in to use direct messages.</div>
+
+        <div id="dmControls" style="display:none;">
+
+            <div id="myGroupsSection" style="margin-bottom:15px;">
+
+                <div id="myGroupsList"></div>
+
+                <button id="newGroupButton">
+                    ➕ NEW GROUP CHAT
+                </button>
+
+                <div id="newGroupForm" style="display:none;margin-top:10px;">
+
+                    <input
+                        id="groupNameInput"
+                        type="text"
+                        maxlength="40"
+                        placeholder="Group name"
+                    >
+
+                    <div id="groupMembersChips"></div>
+
+                    <button id="addMemberButton">
+                        ➕ ADD MEMBER
+                    </button>
+
+                    <div id="addMemberRow" style="display:none;margin-top:8px;">
+
+                        <input
+                            id="groupMemberUsernameInput"
+                            type="text"
+                            maxlength="30"
+                            placeholder="Username"
+                        >
+
+                        <button id="addPersonButton">
+                            ADD PERSON
+                        </button>
+
+                    </div>
+
+                    <div id="addMemberStatus"></div>
+
+                    <div style="margin-top:10px;">
+
+                        <button id="createGroupButton">
+                            CREATE GROUP
+                        </button>
+
+                        <button id="cancelGroupButton">
+                            CANCEL
+                        </button>
+
+                    </div>
+
+                    <div id="groupCreateStatus"></div>
+
+                </div>
+
+            </div>
+
+            <hr style="border-color:#333;">
+
+            <input
+                id="dmTarget"
+                type="text"
+                maxlength="30"
+                placeholder="Username to message"
+            >
+
+            <button id="openDmButton">
+                OPEN CHAT
+            </button>
+
+            <div id="dmChatInfo" style="margin-top:8px;color:#aaa;"></div>
+
+            <div id="dmGroupActions" style="display:none;margin-top:6px;">
+
+                <button id="deleteGroupButton" class="admin-delete" style="display:none;">
+                    🗑️ DELETE GROUP
+                </button>
+
+                <button id="leaveGroupButton" style="display:none;">
+                    🚪 LEAVE GROUP
+                </button>
+
+            </div>
+
+            <div id="dmMessages">
+                <div style="color:#777;">Enter a username and open a chat.</div>
+            </div>
+
+            <textarea
+                id="dmMessageInput"
+                maxlength="1000"
+                placeholder="Write a private message..."
+            ></textarea>
+
+            <button id="sendDmButton">
+                SEND
+            </button>
+
+            <div id="dmMessageStatus"></div>
+        </div>
+
+    </div>
+
+    <!-- REQUEST PANEL -->
+
+    <div id="requestPanel">
+
+        <h2>💡 REQUEST SOMETHING</h2>
+
+        <input
+            id="requestUsername"
+            type="text"
+            maxlength="30"
+            placeholder="Your name (optional)"
+        >
+
+        <textarea
+            id="requestInput"
+            maxlength="1000"
+            placeholder="What should I add to the website?"
+        ></textarea>
+
+        <button id="sendRequestButton">
+            SEND REQUEST
+        </button>
+
+        <div id="requestMessage"></div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js"></script>
+
 </body>
 </html>
